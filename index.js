@@ -20,9 +20,13 @@ exports.generate = (event, context, callback) => {
       body: { error: 'No body provided' }
     }, callback);
   }
+  const paquetes = [];
+  for (let index = 0; index < body.length; index++) {
+    paquetes.push({ paquete: body[index] });
+  }
 
   console.log('Generating schedule: ', xforwardedfor);
-  const generator = new Generador(body.map((paquete) => ({ paquete })));
+  const generator = new Generador(paquetes);
 
   return getResponse({
     statusCode: 200,
