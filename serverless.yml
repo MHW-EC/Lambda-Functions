@@ -20,7 +20,7 @@ provider:
     name: com.serverless.${self:provider.region}.functions.mhw
   timeout: 300
   memorySize: 2048
-  versionFunctions: false
+  versionFunctions: true
   # UNCOMMENT IF YOU NEED ENVIRONMENT VARIABLES
   environment:
     SERVER_ENV: production
