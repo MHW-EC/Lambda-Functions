@@ -17,7 +17,7 @@ provider:
   region: sa-east-1
   stage: prod
   deploymentBucket:
-    name: com.serverless.${self:provider.region}.functions
+    name: com.serverless.${self:provider.region}.functions.mhw
   timeout: 300
   memorySize: 2048
   versionFunctions: false
