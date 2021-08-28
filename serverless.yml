@@ -1,0 +1,81 @@
+frameworkVersion: "2"
+service: lambda-fn-mhw
+provider:
+  name: aws
+  ecr:
+    images:
+      appimage:
+        path: ./
+  vpc:
+    securityGroupIds:
+      - sg-5d9e4215
+    subnetIds:
+      - subnet-f8067c9e
+      - subnet-fc067eb5
+  role: arn:aws:iam::665407732775:role/LambdaBasicExecution
+  runtime: nodejs14.x
+  region: sa-east-1
+  stage: prod
+  deploymentBucket:
+    name: com.serverless.${self:provider.region}.functions
+  timeout: 300
+  versionFunctions: false
+  # UNCOMMENT IF YOU NEED ENVIRONMENT VARIABLES
+  environment:
+    SERVER_ENV: production
+functions:
+  channelApiAuth:
+    image:
+      name: appimage
+      command:
+        - index.tokenAuthentication
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http: GET /integrations/token/{companyname}
+  initPipeline:
+    image:
+      name: appimage
+      command:
+        - index.gatherHandler
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+  jsonParser:
+    image:
+      name: appimage
+      command:
+        - index.jsonParserHandler
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+  createDelivery:
+    image:
+      name: appimage
+      command:
+        - index.createDelivery
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+  channelAPIHandler:
+    image:
+      name: appimage
+      command:
+        - index.channelHandler
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http: ANY /integrations/{companyname}/{proxy+}
+  webhookHandler:
+    image:
+      name: appimage
+      command:
+        - index.webhookHandler
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http: ANY /integrations/webhook/{shippifyModule}/{companyname}/{proxy+}
+  idWallVerifications:
+    image:
+      name: appimage
+      command:
+        - index.idWallWebhook
+      entryPoint:
+        - '/lambda-entrypoint.sh'
