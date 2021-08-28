@@ -7,8 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -35,10 +33,12 @@ jobs:
         uses: actions/setup-node@v2
       - name: Deploy lambda to AWS
         run: |
+          echo "======================================================================="
+          echo "Instaling serverless and setup credentials"
           pip3 install awscli
           npm config set prefix /usr/local
           npm install -g serverless --unsafe
-          aws ecr get-login-password --region sa-east-1 | docker login --username AWS
+          aws ecr get-login-password --region sa-east-1 | docker login --username AWS  --password-stdin 665407732775.dkr.ecr.sa-east-1.amazonaws.com
           echo "======================================================================="
           echo "Start Deployment Lambda MHW"
           cd "${GITHUB_WORKSPACE}/"
