@@ -21,7 +21,6 @@ provider:
   timeout: 30
   memorySize: 2048
   versionFunctions: true
-  # UNCOMMENT IF YOU NEED ENVIRONMENT VARIABLES
   environment:
     SERVER_ENV: production
 functions:

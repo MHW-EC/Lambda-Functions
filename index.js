@@ -27,10 +27,12 @@ exports.generate = (event, context, callback) => {
 
   console.log('Generating schedule: ', xforwardedfor);
   const generator = new Generador(paquetes);
+  
+  const horarios = [];
+  const horariosGenerados = generator.HorariosGenerados;
+  for (let index = 0; index < horariosGenerados.length; index++) {
+    horarios.push(horariosGenerados[index].materias);
+  }
 
-  return getResponse({
-    statusCode: 200,
-    body: generator.HorariosGenerados.map((horario) => horario.materias)
-  }, callback);
-
+  return getResponse({ statusCode: 200, body: horarios }, callback);
 };
