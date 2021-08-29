@@ -18,7 +18,7 @@ provider:
   stage: prod
   deploymentBucket:
     name: com.serverless.${self:provider.region}.functions.mhw
-  timeout: 300
+  timeout: 30
   memorySize: 2048
   versionFunctions: true
   # UNCOMMENT IF YOU NEED ENVIRONMENT VARIABLES
