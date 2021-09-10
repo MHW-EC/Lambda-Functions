@@ -59,8 +59,11 @@ class Generador {
 			const horario = new Horario();
 			for (let idx2 = 0; idx2 < combinacion.length; idx2++) {
 				const paquete = combinacion[idx2];
-				numMats = horario.addPaquete(paquete['paquete']) ? numMats + 1 : numMats;
+				//horario.addPaquete(paquete['paquete']) ? numMats + 1 : numMats;
+				numMats += horario.addPaquete(paquete['paquete']) ? numMats + 1 : numMats ? 1 : 0;
 			}
+			//revisar esta huevada
+			console.log(numMats, '----');
 			if (numMats > 1) {
 				let repetido = false;
 				for (let hor of this.horariosGenerados) {

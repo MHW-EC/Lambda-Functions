@@ -43,10 +43,7 @@ class Combinador {
 		} //parche 1 sola materia
 
 		for (let idx = 0; idx < permutaciones.length; idx++) {
-			const producotCartesiano = permutaciones[idx]?.length > 1 ?
-				this.cartesianProduct(...permutaciones[idx])
-				: permutaciones[idx];
-
+			const producotCartesiano = this.cartesianProduct(...permutaciones[idx]);
 			for (let index = 0; index < producotCartesiano.length; index++) {
 				const producto = producotCartesiano[index];
 				this.resultados.push(producto);
