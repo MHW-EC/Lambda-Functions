@@ -62,9 +62,7 @@ class Generador {
 				//horario.addPaquete(paquete['paquete']) ? numMats + 1 : numMats;
 				numMats += horario.addPaquete(paquete['paquete']) ? numMats + 1 : numMats ? 1 : 0;
 			}
-			//revisar esta huevada
-			console.log(numMats, '----');
-			if (numMats > 1) {
+			//if (numMats > 1) {
 				let repetido = false;
 				for (let hor of this.horariosGenerados) {
 					if (horario.equals(hor)) {
@@ -73,7 +71,7 @@ class Generador {
 					}
 				}
 				if (!repetido) { this.horariosGenerados.push(horario); }
-			}
+			//}
 		}
 		/* combinaciones.resultados.forEach((combinacion) => {
 			//let entroMatPrioritaria = true;
