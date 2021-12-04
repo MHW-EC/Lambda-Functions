@@ -1,5 +1,5 @@
-const Generador = require('./serverModules/Generador');
-const { getResponse } = require('./utils')
+const Generador = require('@enmanuel_mag/mhwlib');
+const { getResponse } = require('./utils');
 
 exports.generate = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
