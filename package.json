@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@enmanuel_mag/mhwlib": "*",
+    "@enmanuel_mag/mhwlib": "^1.4.0",
     "node-os-utils": "^1.3.5"
   }
 }

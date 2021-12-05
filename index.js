@@ -10,11 +10,11 @@ exports.generate = (event, context, callback) => {
     return getResponse({ statusCode: 204 }, callback);
   }
 
-  const { header = {}, body } = event;
+  const { header = {}, body = [] } = event;
   const xforwardedfor = header['x-forwarded-for'];
   console.log('BODY: ', body);
 
-  if (!body) {
+  if (!body.length) {
     return getResponse({
       statusCode: 400,
       body: { error: 'No body provided' }
@@ -29,7 +29,7 @@ exports.generate = (event, context, callback) => {
   const generator = new Generador(paquetes);
   
   const horarios = [];
-  const horariosGenerados = generator.HorariosGenerados;
+  const { horariosGenerados = [] } = generator;
   for (let index = 0; index < horariosGenerados.length; index++) {
     horarios.push(horariosGenerados[index].materias);
   }
