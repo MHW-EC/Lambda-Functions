@@ -15,10 +15,13 @@ exports.generate = (event, context, callback) => {
   console.log('BODY: ', body);
 
   if (!body.length) {
-    return getResponse({
-      statusCode: 400,
-      body: { error: 'No body provided' }
-    }, callback);
+    return getResponse(
+      {
+        statusCode: 400,
+        body: { error: 'No body provided' },
+      },
+      callback
+    );
   }
   const paquetes = [];
   for (let index = 0; index < body.length; index++) {
@@ -27,12 +30,29 @@ exports.generate = (event, context, callback) => {
 
   console.log('Generating schedule: ', xforwardedfor);
   const generator = new Generador(paquetes);
-  
-  const horarios = [];
+  return generator.generarHorarios((err, horarios) => {
+    if (err) {
+      return getResponse(
+        {
+          statusCode: 500,
+          body: { error: err },
+        },
+        callback
+      );
+    }
+    return getResponse(
+      {
+        statusCode: 200,
+        body: horarios.map((h) => h.materias),
+      },
+      callback
+    );
+  });
+  /* const horarios = [];
   const { horariosGenerados = [] } = generator;
   for (let index = 0; index < horariosGenerados.length; index++) {
     horarios.push(horariosGenerados[index].materias);
   }
 
-  return getResponse({ statusCode: 200, body: horarios }, callback);
+  return getResponse({ statusCode: 200, body: horarios }, callback); */
 };
