@@ -1,4 +1,5 @@
-const Generador = require('@enmanuel_mag/mhwlib');
+const { Generador } = require('@enmanuel_mag/mhwlib');
+const { v4 } = require('uuid');
 const { getResponse } = require('./utils');
 
 exports.generate = (event, context, callback) => {
@@ -10,11 +11,14 @@ exports.generate = (event, context, callback) => {
     return getResponse({ statusCode: 204 }, callback);
   }
 
-  const { header = {}, body = [] } = event;
+  const { header = {}, body:  {
+    payload = [],
+    uuid,
+  } } = event;
   const xforwardedfor = header['x-forwarded-for'];
-  console.log('BODY: ', body);
+  console.log('BODY: ', payload);
 
-  if (!body.length) {
+  if (!payload.length) {
     return getResponse(
       {
         statusCode: 400,
@@ -24,13 +28,13 @@ exports.generate = (event, context, callback) => {
     );
   }
   const paquetes = [];
-  for (let index = 0; index < body.length; index++) {
-    paquetes.push({ paquete: body[index] });
+  for (let index = 0; index < payload.length; index++) {
+    paquetes.push({ paquete: payload[index] });
   }
 
   console.log('Generating schedule: ', xforwardedfor);
-  const generator = new Generador(paquetes);
-  return generator.generarHorarios((err, horarios) => {
+  const generator = new Generador(uuid, paquetes);
+  return generator.generarHorarios((err) => {
     if (err) {
       return getResponse(
         {
@@ -43,7 +47,7 @@ exports.generate = (event, context, callback) => {
     return getResponse(
       {
         statusCode: 200,
-        body: horarios.map((h) => h.materias),
+        body: uuid,
       },
       callback
     );
