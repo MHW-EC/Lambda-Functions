@@ -10,7 +10,7 @@ exports.generate = (event, context, callback) => {
     return getResponse({ statusCode: 204 }, callback);
   }
 
-  const { header = {}, body:  {
+  const { header = {}, body: {
     payload = [],
     uuid,
   } } = event;
@@ -69,7 +69,7 @@ exports.read = (event, context, callback) => {
     return getResponse({ statusCode: 204 }, callback);
   }
 
-  const { 
+  const {
     body
   } = event;
   console.log('BODY: ', body);
@@ -78,32 +78,32 @@ exports.read = (event, context, callback) => {
     return getResponse(
       {
         statusCode: 400,
-        body: { 
-          error: 'No body provided' 
+        body: {
+          error: 'No body provided'
         },
       },
       callback
     );
   }
   Reader.getResourceData(body)
-  .then(response => {
-    console.log({response});
-    return getResponse(
-      {
-        statusCode: 200,
-        body: response,
-      },
-      callback
-    );
-  }).catch(error => {
-    return getResponse(
-      {
-        statusCode: 500,
-        body: { 
-          error 
+    .then(response => {
+      console.log({ response });
+      return getResponse(
+        {
+          statusCode: 200,
+          body: response,
         },
-      },
-      callback
-    );
-  });
+        callback
+      );
+    }).catch(error => {
+      return getResponse(
+        {
+          statusCode: 500,
+          body: {
+            error
+          },
+        },
+        callback
+      );
+    });
 };
