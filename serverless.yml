@@ -33,3 +33,12 @@ functions:
         - '/lambda-entrypoint.sh'
     events:
       - http: PUT /generar
+  read:
+    image:
+      name: appimage
+      command:
+        - index.read
+      entryPoint:
+        - '/lambda-entrypoint.sh'
+    events:
+      - http: POST /read

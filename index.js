@@ -1,5 +1,4 @@
-const { Generador } = require('@enmanuel_mag/mhwlib');
-const { v4 } = require('uuid');
+const { Generador, Reader } = require('@enmanuel_mag/mhwlib');
 const { getResponse } = require('./utils');
 
 exports.generate = (event, context, callback) => {
@@ -59,4 +58,52 @@ exports.generate = (event, context, callback) => {
   }
 
   return getResponse({ statusCode: 200, body: horarios }, callback); */
+};
+
+exports.read = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  console.log('EVENT:', event);
+  console.log('CONTEXT:', context);
+
+  if (event.httpMethod.toUpperCase() === 'OPTIONS') {
+    return getResponse({ statusCode: 204 }, callback);
+  }
+
+  const { 
+    body
+  } = event;
+  console.log('BODY: ', body);
+
+  if (!Object.keys(body).length) {
+    return getResponse(
+      {
+        statusCode: 400,
+        body: { 
+          error: 'No body provided' 
+        },
+      },
+      callback
+    );
+  }
+  Reader.getResourceData(body)
+  .then(response => {
+    console.log({response});
+    return getResponse(
+      {
+        statusCode: 200,
+        body: response,
+      },
+      callback
+    );
+  }).catch(error => {
+    return getResponse(
+      {
+        statusCode: 500,
+        body: { 
+          error 
+        },
+      },
+      callback
+    );
+  });
 };
