@@ -86,8 +86,8 @@ exports.read = (event, context, callback) => {
       callback
     );
   }
-  const callbackFunction = util.callbackify(Reader.getResourceData(body));
-  callbackFunction((err, response) => {
+  const callbackFunction = util.callbackify(Reader.getResourceData);
+  callbackFunction(body, (err, response) => {
       if (err){
         console.log(err);
         return getResponse(
