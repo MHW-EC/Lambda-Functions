@@ -1,5 +1,6 @@
 const { Generador, Reader } = require('@enmanuel_mag/mhwlib');
 const { getResponse } = require('./utils');
+const util = require('util');
 
 exports.generate = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -85,9 +86,21 @@ exports.read = (event, context, callback) => {
       callback
     );
   }
-  Reader.getResourceData(body)
-    .then(response => {
-      console.log({ response });
+  const callbackFunction = util.callbackify(Reader.getResourceData(body));
+  callbackFunction((err, response) => {
+      if (err){
+        console.log(err);
+        return getResponse(
+          {
+            statusCode: 500,
+            body: {
+              err
+            },
+          },
+          callback
+        );
+      };
+      console.log(response);
       return getResponse(
         {
           statusCode: 200,
@@ -95,15 +108,5 @@ exports.read = (event, context, callback) => {
         },
         callback
       );
-    }).catch(error => {
-      return getResponse(
-        {
-          statusCode: 500,
-          body: {
-            error
-          },
-        },
-        callback
-      );
-    });
+  });
 };
