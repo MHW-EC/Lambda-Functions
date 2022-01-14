@@ -1,6 +1,6 @@
-const { Generador } = require('@enmanuel_mag/mhwlib');
-const { v4 } = require('uuid');
+const { Generador, Reader } = require('@enmanuel_mag/mhwlib');
 const { getResponse } = require('./utils');
+const util = require('util');
 
 exports.generate = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -11,7 +11,7 @@ exports.generate = (event, context, callback) => {
     return getResponse({ statusCode: 204 }, callback);
   }
 
-  const { header = {}, body:  {
+  const { header = {}, body: {
     payload = [],
     uuid,
   } } = event;
@@ -59,4 +59,54 @@ exports.generate = (event, context, callback) => {
   }
 
   return getResponse({ statusCode: 200, body: horarios }, callback); */
+};
+
+exports.read = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  console.log('EVENT:', event);
+  console.log('CONTEXT:', context);
+
+  if (event.httpMethod.toUpperCase() === 'OPTIONS') {
+    return getResponse({ statusCode: 204 }, callback);
+  }
+
+  const {
+    body
+  } = event;
+  console.log('BODY: ', body);
+
+  if (!Object.keys(body).length) {
+    return getResponse(
+      {
+        statusCode: 400,
+        body: {
+          error: 'No body provided'
+        },
+      },
+      callback
+    );
+  }
+  const callbackFunction = util.callbackify(Reader.getResourceData);
+  callbackFunction(body, (err, response) => {
+      if (err){
+        console.log(err);
+        return getResponse(
+          {
+            statusCode: 500,
+            body: {
+              err
+            },
+          },
+          callback
+        );
+      };
+      console.log(response);
+      return getResponse(
+        {
+          statusCode: 200,
+          body: response,
+        },
+        callback
+      );
+  });
 };
