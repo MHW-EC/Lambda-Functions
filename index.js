@@ -62,7 +62,7 @@ exports.generate = (event, context, callback) => {
 };
 
 exports.read = (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
+  //context.callbackWaitsForEmptyEventLoop = false;
   console.log('EVENT:', event);
   console.log('CONTEXT:', context);
 
