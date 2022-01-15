@@ -61,7 +61,7 @@ exports.generate = (event, context, callback) => {
   return getResponse({ statusCode: 200, body: horarios }, callback); */
 };
 
-exports.read = (event, context, callback) => {
+exports.read = async (event, context, callback) => {
   //context.callbackWaitsForEmptyEventLoop = false;
   console.log('EVENT:', event);
   console.log('CONTEXT:', context);
