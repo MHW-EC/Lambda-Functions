@@ -89,7 +89,7 @@ exports.read = async function(event, context, callback) {
   console.log("Valid body");
 
   try{
-    const resource = Reader.getResourceData(body);
+    const resource = await Reader.getResourceData(body);
     console.log({resource});
     return getResponse(
       {
