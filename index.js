@@ -86,27 +86,27 @@ exports.read = (event, context, callback) => {
       callback
     );
   }
-  const callbackFunction = util.callbackify(Reader.getResourceData);
-  callbackFunction(body, (err, response) => {
-      if (err){
-        console.log(err);
-        return getResponse(
-          {
-            statusCode: 500,
-            body: {
-              err
-            },
-          },
-          callback
-        );
-      };
-      console.log(response);
+  return Reader.getResourceDataByCb(body, (err, response) => {
+    if (err){
+      console.log(err);
       return getResponse(
         {
-          statusCode: 200,
-          body: response,
+          statusCode: 500,
+          body: {
+            err
+          },
         },
         callback
       );
-  });
+    };
+    console.log(response);
+    return getResponse(
+      {
+        statusCode: 200,
+        body: response,
+      },
+      callback
+    );
+  })
+ 
 };
