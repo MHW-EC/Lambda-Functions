@@ -12,18 +12,19 @@ exports.generate = (event, context, callback) => {
   }
 
   let {
-    header = {},
+    headers = {},
     body
   } = event;
 
-  console.log('Generating schedule: ', header['x-forwarded-for']);
+  console.log('Generating schedule: ', headers['X-Forwarded-For']);
 
   const params = {
     FunctionName: 'generateRoutine',
+    InvocationType: 'event',
     InvokeArgs: JSON.stringify(event)
   };
   
-  new AWS.Lambda().invokeAsync(params, function(err, data) {
+  new AWS.Lambda().invoke(params, function(err, data) {
     if (err) {
       console.log(err, err.stack);
       return getResponse(
