@@ -104,7 +104,7 @@ exports.read = async function(event, context, callback) {
       {
         statusCode: 500,
         body: {
-          err
+          error
         },
       },
       callback
