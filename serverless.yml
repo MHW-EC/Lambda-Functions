@@ -20,14 +20,6 @@ provider:
     SERVER_ENV: production
     DB_URI: mongodb+srv://josue:lospajaroscantanmientraslospecesnadan@heroku-28zqn5s2.htt13.mongodb.net/heroku_28zqn5s2?retryWrites=true&w=majority
     DB_NAME: heroku_28zqn5s2
-# permission:
-#   type: AWS::Lambda::Permission
-#   properties:
-#     functionName: arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-reforce-prod-generate
-#     action: lambda:InvokeFunction
-#     Principal: apigateway.amazonaws.com
-#     SourceAccount: 665407732775
-#     SourceArn: arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-reforce-prod-generateRoutine
 functions:
   generateRoutine:
     image:
@@ -45,6 +37,14 @@ functions:
         - '/lambda-entrypoint.sh'
     events:
       - http: PUT /generate
+    permission:
+      type: AWS::Lambda::Permission
+      properties:
+        functionName: arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-reforce-prod-generate
+        action: lambda:InvokeFunction
+        principal: apigateway.amazonaws.com
+        sourceAccount: 665407732775
+        sourceArn: arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-reforce-prod-generateRoutine
   read:
     image:
       name: appimage
