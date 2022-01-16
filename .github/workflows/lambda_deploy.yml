@@ -42,7 +42,11 @@ jobs:
           aws ecr get-login-password --region sa-east-1 | docker login --username AWS  --password-stdin 665407732775.dkr.ecr.sa-east-1.amazonaws.com
           echo "======================================================================="
           echo "Start Deployment Lambda MHW"
+          npm install node-prune modclean -g
           cd "${GITHUB_WORKSPACE}/"
+          npm i
+          node-prune
+          modclean -n default:safe,default:caution -r
           serverless -v deploy
           status=$?
           [ $status -eq 0 ] && echo "End Deployment Lambdas AI" || exit 1
