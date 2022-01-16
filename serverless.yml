@@ -1,14 +1,12 @@
-service: lambda-fn-mhw-rebuild
-package:
-  excludeDevDependencies: false
+frameworkVersion: "2"
+service: lambda-fn-mhw-reforce
 provider:
   name: aws
-  vpc:
-    securityGroupIds:
-      - sg-5d9e4215
-    subnetIds:
-      - subnet-f8067c9e
-      - subnet-fc067eb5
+  ecr:
+    images:
+      appimage:
+        path: ./
+  vpc: none
   role: arn:aws:iam::665407732775:role/LambdaBasicExecution
   runtime: nodejs14.x
   region: sa-east-1
@@ -24,10 +22,20 @@ provider:
     DB_NAME: heroku_28zqn5s2
 functions:
   generate:
-    handler: index.generate
+    image:
+      name: appimage
+      command:
+        - index.generate
+      entryPoint:
+        - '/lambda-entrypoint.sh'
     events:
       - http: PUT /generar
   read:
-    handler: index.read
+    image:
+      name: appimage
+      command:
+        - index.read
+      entryPoint:
+        - '/lambda-entrypoint.sh'
     events:
       - http: POST /read
