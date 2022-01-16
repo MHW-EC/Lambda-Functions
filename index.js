@@ -11,10 +11,17 @@ exports.generate = (event, context, callback) => {
     return getResponse({ statusCode: 204 }, callback);
   }
 
-  const { header = {}, body: {
-    payload = [],
-    uuid,
-  } } = event;
+  let {
+    header = {},
+    body
+  } = event;
+
+  if (typeof body === 'string') {
+    body = JSON.parse(body);
+  }
+
+  const { payload, uuid } = body;
+
   const xforwardedfor = header['x-forwarded-for'];
   console.log('BODY: ', payload);
 
@@ -70,9 +77,14 @@ exports.read = async function(event, context, callback) {
     return getResponse({ statusCode: 204 }, callback);
   }
 
-  const {
+  let {
     body
   } = event;
+
+  if (typeof body === 'string') {
+    body = JSON.parse(body);
+  }
+
   console.log('BODY: ', body);
 
   if (!Object.keys(body).length) {
