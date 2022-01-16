@@ -36,7 +36,7 @@ functions:
       entryPoint:
         - '/lambda-entrypoint.sh'
     events:
-      - http: PUT /generar
+      - http: PUT /generate
   read:
     image:
       name: appimage
