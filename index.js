@@ -20,7 +20,7 @@ exports.generate = (event, context, callback) => {
 
   const params = {
     FunctionName: 'generateRoutine',
-    InvokeArgs: event
+    InvokeArgs: JSON.stringify(event)
   };
   
   new AWS.Lambda().invokeAsync(params, function(err, data) {
