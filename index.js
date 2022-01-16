@@ -1,11 +1,50 @@
 const { Generador, Reader } = require('@enmanuel_mag/mhwlib');
 const { getResponse } = require('./utils');
-const mongoose = require('mongoose');
+const AWS = require('aws-sdk');
 
 exports.generate = (event, context, callback) => {
+  console.log("RUNNING GENERATE HANDLER");
+  console.log("INVOKING GENERATE ROUTINE");
+  console.log({event, context});
+
+  if (event.httpMethod.toUpperCase() === 'OPTIONS') {
+    return getResponse({ statusCode: 204 }, callback);
+  }
+
+  var params = {
+    FunctionName: 'generateRoutine',
+    InvokeArgs: event
+  };
+
+  new AWS.Lambda().invokeAsync(params, function(err, data) {
+    if (err) {
+      console.log(err, err.stack);
+      return getResponse(
+        {
+          statusCode: 400,
+          body: { 
+            error: err.name
+          },
+        },
+        callback
+      );
+    } else {
+      console.log(data);
+      return getResponse(
+        {
+          statusCode: 200,
+          message: "OK",
+        },
+        callback
+      );
+    }
+  });
+  
+};
+
+exports.generateRoutine = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  console.log('EVENT:', event);
-  console.log('CONTEXT:', context);
+  console.log({event, context});
 
   if (event.httpMethod.toUpperCase() === 'OPTIONS') {
     return getResponse({ statusCode: 204 }, callback);
@@ -20,16 +59,20 @@ exports.generate = (event, context, callback) => {
     body = JSON.parse(body);
   }
 
-  const { payload, uuid } = body;
+  const { 
+    payload, uuid 
+  } = body;
 
   const xforwardedfor = header['x-forwarded-for'];
-  console.log('BODY: ', payload);
+  console.log({body});
 
   if (!payload.length) {
     return getResponse(
       {
         statusCode: 400,
-        body: { error: 'No body provided' },
+        body: { 
+          error: 'No body provided' 
+        },
       },
       callback
     );
@@ -59,14 +102,7 @@ exports.generate = (event, context, callback) => {
       callback
     );
   });
-  /* const horarios = [];
-  const { horariosGenerados = [] } = generator;
-  for (let index = 0; index < horariosGenerados.length; index++) {
-    horarios.push(horariosGenerados[index].materias);
-  }
-
-  return getResponse({ statusCode: 200, body: horarios }, callback); */
-};
+}
 
 exports.read = async function(event, context, callback) {
   context.callbackWaitsForEmptyEventLoop = false;

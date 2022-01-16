@@ -21,6 +21,13 @@ provider:
     DB_URI: mongodb+srv://josue:lospajaroscantanmientraslospecesnadan@heroku-28zqn5s2.htt13.mongodb.net/heroku_28zqn5s2?retryWrites=true&w=majority
     DB_NAME: heroku_28zqn5s2
 functions:
+  generateRoutine:
+    image:
+      name: appimage
+      command:
+        - index.generateRoutine
+      entryPoint:
+        - '/lambda-entrypoint.sh'
   generate:
     image:
       name: appimage
