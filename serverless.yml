@@ -23,11 +23,12 @@ provider:
 permission:
   type: AWS::Lambda::Permission
   properties:
-    functionName: generate
+    functionName: arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-reforce-prod-generate
     action: lambda:InvokeFunction
     Principal: 665407732775
+    SourceArn: arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-reforce-prod-generateRoutine
 functions:
-  generateRoutine:
+  generateRoutine:generate
     image:
       name: appimage
       command:
