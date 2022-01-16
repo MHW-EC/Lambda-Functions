@@ -1,11 +1,8 @@
-frameworkVersion: "2"
-service: lambda-fn-mhw
+service: lambda-fn-mhw-rebuild
+package:
+  excludeDevDependencies: false
 provider:
   name: aws
-  ecr:
-    images:
-      appimage:
-        path: ./
   vpc:
     securityGroupIds:
       - sg-5d9e4215
@@ -27,20 +24,10 @@ provider:
     DB_NAME: heroku_28zqn5s2
 functions:
   generate:
-    image:
-      name: appimage
-      command:
-        - index.generate
-      entryPoint:
-        - '/lambda-entrypoint.sh'
+    handler: index.generate
     events:
       - http: PUT /generar
   read:
-    image:
-      name: appimage
-      command:
-        - index.read
-      entryPoint:
-        - '/lambda-entrypoint.sh'
+    handler: index.read
     events:
       - http: POST /read
