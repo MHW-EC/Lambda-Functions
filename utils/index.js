@@ -6,7 +6,7 @@ const getResponse = ({ statusCode, body }, callback) => callback(null, {
       'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Authorization, X-Requested-With, Access-Control-Allow-Origin, X-HTTP-Method-Override, Content-Type, Accept'
     },
-    body,
+    body: JSON.stringify(body),
     isBase64Encoded: !!body ? true : false
 });
 
