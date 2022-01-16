@@ -11,11 +11,18 @@ exports.generate = (event, context, callback) => {
     return getResponse({ statusCode: 204 }, callback);
   }
 
-  var params = {
+  let {
+    header = {},
+    body
+  } = event;
+
+  console.log('Generating schedule: ', header['x-forwarded-for']);
+
+  const params = {
     FunctionName: 'generateRoutine',
     InvokeArgs: event
   };
-
+  
   new AWS.Lambda().invokeAsync(params, function(err, data) {
     if (err) {
       console.log(err, err.stack);
@@ -29,11 +36,19 @@ exports.generate = (event, context, callback) => {
         callback
       );
     } else {
+      if (typeof body === 'string') {
+        body = JSON.parse(body);
+      }
+      const { 
+        uuid 
+      } = body;
       console.log(data);
       return getResponse(
         {
           statusCode: 200,
-          message: "OK",
+          body: {
+            uuid
+          },
         },
         callback
       );
@@ -46,12 +61,11 @@ exports.generateRoutine = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
   console.log({event, context});
 
-  if (event.httpMethod.toUpperCase() === 'OPTIONS') {
+  if (event?.httpMethod?.toUpperCase() === 'OPTIONS') {
     return getResponse({ statusCode: 204 }, callback);
   }
 
   let {
-    header = {},
     body
   } = event;
 
@@ -63,7 +77,6 @@ exports.generateRoutine = (event, context, callback) => {
     payload, uuid 
   } = body;
 
-  const xforwardedfor = header['x-forwarded-for'];
   console.log({body});
 
   if (!payload.length) {
@@ -82,25 +95,24 @@ exports.generateRoutine = (event, context, callback) => {
     paquetes.push({ paquete: payload[index] });
   }
 
-  console.log('Generating schedule: ', xforwardedfor);
-  const generator = new Generador(uuid, paquetes);
-  return generator.generarHorarios((err) => {
-    if (err) {
+  return new Generador(uuid, paquetes)
+    .generarHorarios((err) => {
+      if (err) {
+        return getResponse(
+          {
+            statusCode: 500,
+            body: { error: err },
+          },
+          callback
+        );
+      }
       return getResponse(
         {
-          statusCode: 500,
-          body: { error: err },
+          statusCode: 200,
+          body: uuid,
         },
         callback
       );
-    }
-    return getResponse(
-      {
-        statusCode: 200,
-        body: uuid,
-      },
-      callback
-    );
   });
 }
 
