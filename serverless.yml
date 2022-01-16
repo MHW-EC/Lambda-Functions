@@ -37,14 +37,6 @@ functions:
         - '/lambda-entrypoint.sh'
     events:
       - http: PUT /generate
-    permission:
-      type: AWS::Lambda::Permission
-      properties:
-        functionName: arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-reforce-prod-generate
-        action: lambda:InvokeFunction
-        principal: apigateway.amazonaws.com
-        sourceAccount: 665407732775
-        sourceArn: arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-reforce-prod-generateRoutine
   read:
     image:
       name: appimage
