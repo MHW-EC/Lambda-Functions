@@ -99,7 +99,7 @@ exports.read = async function(event, context, callback) {
       callback
     );
   }catch(error){
-    console(error);
+    console.log(error);
     return getResponse(
       {
         statusCode: 500,
