@@ -14,7 +14,7 @@ provider:
   deploymentBucket:
     name: com.serverless.${self:provider.region}.functions.mhw
   timeout: 30
-  memorySize: 2048
+  memorySize: 1024
   versionFunctions: true
   iamRoleStatements:
     - Effect: Allow
