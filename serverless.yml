@@ -26,8 +26,8 @@ provider:
     SERVER_ENV: production
     ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
     SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
-    DB_URI: mongodb+srv://josue:lospajaroscantanmientraslospecesnadan@heroku-28zqn5s2.htt13.mongodb.net/heroku_28zqn5s2?retryWrites=true&w=majority
-    DB_NAME: heroku_28zqn5s2
+    DB_URI: ${env:DB_URI}
+    DB_NAME: ${env:DB_NAME}
 functions:
   generateRoutine:
     image:
