@@ -1,5 +1,6 @@
 const { Generador, Reader } = require('@enmanuel_mag/mhwlib');
 const { getResponse } = require('./utils');
+const { v4: uuidV4 } = require('uuid')
 const AWS = require('aws-sdk');
 
 //set config aws
@@ -31,6 +32,9 @@ exports.generate = (event, context, callback) => {
   } = event;
 
   console.log('Generating schedule: ', headers['X-Forwarded-For']);
+  
+  const uuid = uuidV4();
+  event.body.uuid = uuid;
 
   const params = {
     FunctionName: 'arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
