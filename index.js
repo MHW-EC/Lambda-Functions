@@ -30,6 +30,9 @@ exports.generate = (event, context, callback) => {
     headers = {},
     body
   } = event;
+  if (typeof body === 'string') {
+    body = JSON.parse(body);
+  }
 
   console.log('Generating schedule: ', headers['X-Forwarded-For']);
   
@@ -61,9 +64,7 @@ exports.generate = (event, context, callback) => {
         callback
       );
     }
-    if (typeof body === 'string') {
-      body = JSON.parse(body);
-    }
+    
     console.log('Data from invoke: ', data);
     return getResponse(
       {
