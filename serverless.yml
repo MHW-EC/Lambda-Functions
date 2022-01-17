@@ -29,7 +29,7 @@ provider:
 functions:
   generateRoutine:
     timeout: 900
-    memorySize: 1024
+    memorySize: 2048
     image:
       name: appimage
       command:
