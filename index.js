@@ -33,7 +33,7 @@ exports.generate = (event, context, callback) => {
   console.log('Generating schedule: ', headers['X-Forwarded-For']);
 
   const params = {
-    FunctionName: 'generateRoutine',
+    FunctionName: 'arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
     InvocationType: 'Event',
     Payload: JSON.stringify(event)
   };
