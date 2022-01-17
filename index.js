@@ -43,9 +43,8 @@ exports.generate = (event, context, callback) => {
     FunctionName: 'arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
     InvocationType: 'Event',
     Payload: JSON.stringify({
-      ...event,
       body: {
-        ...event.body,
+        ...body,
         uuid
       }
     })
@@ -81,11 +80,7 @@ exports.generate = (event, context, callback) => {
 
 exports.generateRoutine = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  console.log({event, context});
-
-  if (event?.httpMethod?.toUpperCase() === 'OPTIONS') {
-    return getResponse({ statusCode: 204 }, callback);
-  }
+  console.log({ event });
 
   let {
     body
@@ -99,7 +94,7 @@ exports.generateRoutine = (event, context, callback) => {
     payload, uuid 
   } = body;
 
-  console.log({body});
+  console.log({ body });
 
   if (!payload.length) {
     return getResponse(
