@@ -13,7 +13,6 @@ provider:
   stage: prod
   deploymentBucket:
     name: com.serverless.${self:provider.region}.functions.mhw
-  memorySize: 1024
   versionFunctions: true
   iamRoleStatements:
     - Effect: Allow
@@ -30,6 +29,7 @@ provider:
 functions:
   generateRoutine:
     timeout: 900
+    memorySize: 1024
     image:
       name: appimage
       command:
@@ -38,6 +38,7 @@ functions:
         - '/lambda-entrypoint.sh'
   generate:
     timeout: 30
+    memorySize: 512
     image:
       name: appimage
       command:
@@ -48,6 +49,7 @@ functions:
       - http: PUT /generate
   read:
     timeout: 30
+    memorySize: 512
     image:
       name: appimage
       command:
