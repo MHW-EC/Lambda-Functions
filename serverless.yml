@@ -1,5 +1,5 @@
 frameworkVersion: "2"
-service: lambda-fn-mhw
+service: lambda-fn-mhw-ref
 provider:
   name: aws
   ecr:
