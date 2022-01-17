@@ -24,7 +24,10 @@ exports.generate = (event, context, callback) => {
     Payload: JSON.stringify(event)
   };
   
-  new AWS.Lambda().invoke(params, function(err, data) {
+  new AWS.Lambda({
+    accessKeyId: "AKIAZV3LEHQTRTMSGTOG",
+    secretAccessKey: "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" 
+  }).invoke(params, function(err, data) {
     if (err) {
       console.log(err, err.stack);
       return getResponse(
