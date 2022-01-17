@@ -35,12 +35,17 @@ exports.generate = (event, context, callback) => {
   
   const uuid = uuidV4();
   console.log('UUID: ', uuid);
-  event.body.uuid = uuid;
 
   const params = {
     FunctionName: 'arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
     InvocationType: 'Event',
-    Payload: JSON.stringify(event)
+    Payload: JSON.stringify({
+      ...event,
+      body: {
+        ...event.body,
+        uuid
+      }
+    })
   };
   
   new AWS.Lambda().invoke(params, function(err, data) {
