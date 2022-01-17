@@ -2,10 +2,24 @@ const { Generador, Reader } = require('@enmanuel_mag/mhwlib');
 const { getResponse } = require('./utils');
 const AWS = require('aws-sdk');
 
+//set config aws
+AWS.config.update({
+  region: 'sa-east-1',
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY
+});
+
+
 exports.generate = (event, context, callback) => {
   console.log("RUNNING GENERATE HANDLER");
   console.log("INVOKING GENERATE ROUTINE");
   console.log({event, context});
+
+  console.log('Keys', {
+    env: process.env.SERVER_ENV,
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY
+  });
 
   if (event.httpMethod.toUpperCase() === 'OPTIONS') {
     return getResponse({ statusCode: 204 }, callback);
