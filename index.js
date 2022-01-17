@@ -34,6 +34,7 @@ exports.generate = (event, context, callback) => {
   console.log('Generating schedule: ', headers['X-Forwarded-For']);
   
   const uuid = uuidV4();
+  console.log('UUID: ', uuid);
   event.body.uuid = uuid;
 
   const params = {
