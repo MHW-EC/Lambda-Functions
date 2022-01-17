@@ -13,7 +13,6 @@ provider:
   stage: prod
   deploymentBucket:
     name: com.serverless.${self:provider.region}.functions.mhw
-  timeout: 30
   memorySize: 1024
   versionFunctions: true
   iamRoleStatements:
@@ -30,6 +29,7 @@ provider:
     DB_NAME: ${env:DB_NAME}
 functions:
   generateRoutine:
+    timeout: 900
     image:
       name: appimage
       command:
@@ -37,6 +37,7 @@ functions:
       entryPoint:
         - '/lambda-entrypoint.sh'
   generate:
+    timeout: 30
     image:
       name: appimage
       command:
@@ -46,6 +47,7 @@ functions:
     events:
       - http: PUT /generate
   read:
+    timeout: 30
     image:
       name: appimage
       command:
