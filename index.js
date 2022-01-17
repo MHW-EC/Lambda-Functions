@@ -54,24 +54,20 @@ exports.generate = (event, context, callback) => {
         },
         callback
       );
-    } else {
-      if (typeof body === 'string') {
-        body = JSON.parse(body);
-      }
-      const { 
-        uuid 
-      } = body;
-      console.log(data);
-      return getResponse(
-        {
-          statusCode: 200,
-          body: {
-            uuid
-          },
-        },
-        callback
-      );
     }
+    if (typeof body === 'string') {
+      body = JSON.parse(body);
+    }
+    console.log('Data from invoke: ', data);
+    return getResponse(
+      {
+        statusCode: 200,
+        body: {
+          uuid
+        },
+      },
+      callback
+    );
   });
   
 };
