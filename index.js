@@ -45,7 +45,7 @@ exports.generate = (event, context, callback) => {
         {
           statusCode: 400,
           body: { 
-            error: err.name
+            error: err.name || err.message || 'Unknown error'
           },
         },
         callback
@@ -179,7 +179,7 @@ exports.read = async function(event, context, callback) {
       {
         statusCode: 500,
         body: {
-          error
+          error: error.name || error.message || 'Unknown error'
         },
       },
       callback
