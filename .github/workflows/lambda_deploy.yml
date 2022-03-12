@@ -43,12 +43,12 @@ jobs:
           echo "Instaling serverless and setup credentials"
           pip3 install awscli
           npm config set prefix /usr/local
-          npm install -g serverless --unsafe
+          npm install -g serverless@2.72.2
           aws ecr get-login-password --region sa-east-1 | docker login --username AWS  --password-stdin 665407732775.dkr.ecr.sa-east-1.amazonaws.com
           echo "======================================================================="
           echo "Start Deployment Lambda MHW"
           cd "${GITHUB_WORKSPACE}/"
-          serverless -v deploy
+          serverless deploy
           status=$?
-          [ $status -eq 0 ] && echo "End Deployment Lambdas AI" || exit 1
+          [ $status -eq 0 ] && echo "End Deployment Lambdas MHW" || exit 1
           exit 0
