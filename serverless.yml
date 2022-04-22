@@ -46,7 +46,7 @@ functions:
       entryPoint:
         - '/lambda-entrypoint.sh'
     events:
-      - http: POST /gen
+      - http: POST /generate
   read:
     timeout: 30
     memorySize: 512
