@@ -50,7 +50,7 @@ exports.generate = (event, context, callback) => {
     })
   };
   
-  new AWS.Lambda().invoke(params, function(err, data) {
+  new AWS.Lambda().invoke(params, (err, data) => {
     if (err) {
       console.log(err, err.stack);
       return getResponse(
