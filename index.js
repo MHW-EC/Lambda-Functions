@@ -29,26 +29,25 @@ exports.generate = async function(event, context, callback) {
   console.log('Generating schedule: ', headers['X-Forwarded-For']);
   const uuid = uuidV4();
   console.log('UUID: ', uuid);
-  const params = {
+  const Payload = JSON.stringify({
+    body: {
+      ...body,
+      uuid
+    }
+  });
+  const lambdaAWS = new AWS.Lambda()
+  return lambdaAWS.invoke({
     FunctionName: 'arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
     InvocationType: 'Event',
-    Payload: JSON.stringify({
-      body: {
-        ...body,
-        uuid
-      }
-    })
-  };
-  
-  const lambdaAWS = new AWS.Lambda()
-  return lambdaAWS.invoke(params, (err, data) => {
+    Payload
+  }, (err, data) => {
     if (err) {
-      console.log(err, err.stack);
+      console.log('INVOKE ERROR:', err);
       return getResponse(
         {
           statusCode: 400,
           body: { 
-            error: err.name || err.message || 'Unknown error'
+            error: 'Unknown error'
           },
         },
         callback
