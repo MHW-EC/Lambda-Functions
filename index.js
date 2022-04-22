@@ -11,10 +11,11 @@ AWS.config.update({
 });
 
 
-exports.generate = (event, context, callback) => {
+exports.generate = async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
   console.log("RUNNING GENERATE HANDLER");
   console.log("INVOKING GENERATE ROUTINE");
-  console.log({event, context});
+  console.log({ event, context });
 
   console.log('Keys', {
     env: process.env.SERVER_ENV,
@@ -75,7 +76,6 @@ exports.generate = (event, context, callback) => {
       callback
     );
   });
-  
 };
 
 exports.generateRoutine = (event, context, callback) => {
