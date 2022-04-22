@@ -1,6 +1,7 @@
 const { Generador, Reader } = require('@enmanuel_mag/mhwlib');
 const { getResponse } = require('./utils');
 const { v4: uuidV4 } = require('uuid')
+const async = require('async');
 const AWS = require('aws-sdk');
 
 //set config aws
@@ -11,7 +12,7 @@ AWS.config.update({
 });
 
 
-exports.generate = async function(event, context, callback) {
+exports.generate = function(event, context, callback) {
   context.callbackWaitsForEmptyEventLoop = false;
   console.log('EVENT:', event);
   console.log('CONTEXT:', context);
@@ -36,36 +37,34 @@ exports.generate = async function(event, context, callback) {
     }
   });
   console.log('PAYLOAD: ', Payload);
-  const lambdaAWS = new AWS.Lambda()
-  return lambdaAWS.invoke({
-    FunctionName: 'arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
-    InvocationType: 'Event',
-    Payload
-  }, (err, data) => {
-    if (err) {
-      console.log('INVOKE ERROR:', err);
-      return getResponse(
-        {
-          statusCode: 400,
-          body: { 
-            error: 'Unknown error'
+  const lambdaAWS = new AWS.Lambda();
+  return async.waterfall([
+    (cb) => {
+      return lambdaAWS.invoke({
+        FunctionName: 'arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
+        InvocationType: 'Event',
+        Payload
+      }, (err, data) => {
+        if (err) {
+          console.log('INVOKE ERROR:', err);
+          return cb(null, {
+            statusCode: 400,
+            body: { 
+              error: 'Unknown error'
+            },
+          });
+        }
+        console.log('Data from invoke: ', data);
+        return cb(null, {
+          statusCode: 200,
+          body: {
+            uuid
           },
-        },
-        callback
-      );
+        });
+      });
     }
-    
-    console.log('Data from invoke: ', data);
-    return getResponse(
-      {
-        statusCode: 200,
-        body: {
-          uuid
-        },
-      },
-      callback
-    );
-  });
+  ], (_, result) => getResponse(result, callback));
+  
 };
 
 exports.generateRoutine = (event, context, callback) => {

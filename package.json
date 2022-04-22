@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@enmanuel_mag/mhwlib": "^1.4.0",
+    "async": "^3.2.3",
     "aws-sdk": "^2.1058.0",
     "mongoose": "^6.1.6",
     "node-os-utils": "^1.3.5",
