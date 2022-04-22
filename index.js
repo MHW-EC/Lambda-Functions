@@ -11,22 +11,14 @@ AWS.config.update({
 });
 
 
-exports.generate = async (event, context, callback) => {
+exports.generate = async function(event, context, callback) {
   context.callbackWaitsForEmptyEventLoop = false;
-  console.log("RUNNING GENERATE HANDLER");
-  console.log("INVOKING GENERATE ROUTINE");
-  console.log({ event, context });
-
-  console.log('Keys', {
-    env: process.env.SERVER_ENV,
-    accessKeyId: process.env.ACCESS_KEY_ID,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY
-  });
+  console.log('EVENT:', event);
+  console.log('CONTEXT:', context);
 
   if (event.httpMethod.toUpperCase() === 'OPTIONS') {
     return getResponse({ statusCode: 204 }, callback);
   }
-
   let {
     headers = {},
     body
@@ -34,12 +26,9 @@ exports.generate = async (event, context, callback) => {
   if (typeof body === 'string') {
     body = JSON.parse(body);
   }
-
   console.log('Generating schedule: ', headers['X-Forwarded-For']);
-  
   const uuid = uuidV4();
   console.log('UUID: ', uuid);
-
   const params = {
     FunctionName: 'arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
     InvocationType: 'Event',
