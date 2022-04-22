@@ -35,6 +35,7 @@ exports.generate = async function(event, context, callback) {
       uuid
     }
   });
+  console.log('PAYLOAD: ', Payload);
   const lambdaAWS = new AWS.Lambda()
   return lambdaAWS.invoke({
     FunctionName: 'arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
