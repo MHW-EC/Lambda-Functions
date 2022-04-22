@@ -40,7 +40,8 @@ exports.generate = async function(event, context, callback) {
     })
   };
   
-  new AWS.Lambda().invoke(params, (err, data) => {
+  const lambdaAWS = new AWS.Lambda()
+  return lambdaAWS.invoke(params, (err, data) => {
     if (err) {
       console.log(err, err.stack);
       return getResponse(
