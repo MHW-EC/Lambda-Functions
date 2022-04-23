@@ -2,12 +2,15 @@
 name: CI
 
 on:
-  repository_dispatch
+  repository_dispatch:
+    types: [ Deploy lambdas for MHWLib ]
+
   workflow_dispatch:
     inputs:
       project:
-        description: 'Write in the input "deployment" to confirm'
+        description: Write in the input "deployment" to confirm
         required: true
+
 
 jobs:
   build-deploy:
