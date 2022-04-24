@@ -9,7 +9,7 @@ provider:
   vpc: none
   role: arn:aws:iam::665407732775:role/LambdaBasicExecution
   runtime: nodejs14.x
-  region: sa-east-1
+  region: us-east-1
   stage: prod
   deploymentBucket:
     name: com.serverless.${self:provider.region}.functions.mhw
@@ -19,7 +19,7 @@ provider:
       Action:
         - lambda:InvokeFunction
         - lambda:InvokeAsync
-      Resource: arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-refactoring-prod-generateRoutine
+      Resource: arn:aws:lambda:us-east-1:665407732775:function:lambda-fn-mhw-refactoring-prod-generateRoutine
   environment:
     SERVER_ENV: production
     ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
