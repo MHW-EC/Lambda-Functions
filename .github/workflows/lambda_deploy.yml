@@ -1,5 +1,5 @@
 
-name: CI
+name: Manual Deploy Lambda MHW
 
 on:
   repository_dispatch:
