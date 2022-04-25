@@ -6,7 +6,7 @@ const AWS = require('aws-sdk');
 
 //set config aws
 AWS.config.update({
-  region: 'sa-east-1',
+  region: 'us-east-1',
   accessKeyId: process.env.ACCESS_KEY_ID,
   secretAccessKey: process.env.SECRET_ACCESS_KEY
 });
@@ -41,7 +41,7 @@ exports.generate = function(event, context, callback) {
   return async.waterfall([
     (cb) => {
       return lambdaAWS.invoke({
-        FunctionName: 'arn:aws:lambda:sa-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
+        FunctionName: 'arn:aws:lambda:us-east-1:665407732775:function:lambda-fn-mhw-ref-prod-generateRoutine',
         InvocationType: 'Event',
         Payload
       }, (err, data) => {
