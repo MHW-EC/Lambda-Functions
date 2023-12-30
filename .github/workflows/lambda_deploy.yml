@@ -1,9 +1,8 @@
-
 name: Manual Deploy Lambda MHW
 
 on:
   repository_dispatch:
-    types: [ Deploy lambdas for MHWLib ]
+    types: [Deploy lambdas for MHWLib]
 
   workflow_dispatch:
     inputs:
@@ -11,17 +10,16 @@ on:
         description: Write in the input "deployment" to confirm
         required: true
 
-
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Config action 
+      - name: Config action
         uses: actions/checkout@v2
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.8"
+          python-version: '3.8'
       - name: Setup AWS Core
         uses: aws-actions/setup-sam@v1
       - name: Setup AWS Credentials
@@ -31,7 +29,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: sa-east-1
       - name: Setup NodeJs
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       - name: Deploy lambda to AWS
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
