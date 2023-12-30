@@ -1,4 +1,4 @@
-frameworkVersion: "2"
+frameworkVersion: '2'
 service: lambda-fn-mhw-ref
 provider:
   name: aws
@@ -8,7 +8,7 @@ provider:
         path: ./
   vpc: none
   role: arn:aws:iam::665407732775:role/LambdaBasicExecution
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   region: us-east-1
   stage: prod
   deploymentBucket:
